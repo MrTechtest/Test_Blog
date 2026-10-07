@@ -1,0 +1,67 @@
+body {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    background-color: #FAFAF7;
+    background-image: radial-gradient(#F3E8FF 1.5px, transparent 1.5px), radial-gradient(#FEF3C7 1.5px, #FAFAF7 1.5px);
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+}
+
+.card-hover {
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 12px 24px -6px rgba(251, 191, 36, 0.25);
+}
+
+/* Toast notification animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+.toast-enter {
+    animation: slideIn 0.3s forwards cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+.toast-exit {
+    animation: slideOut 0.3s forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FAF5FF;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FCD34D;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #F59E0B;
+}

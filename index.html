@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぽかぽか趣味ブログ - Game & Card Openings</title>
+    <!-- Tailwind CSS with Typography plugin -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Zen Maru Gothic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <script src="script.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        },
+                        pastel: {
+                            pink: '#FFEDF3',
+                            pinkBorder: '#FFB6C1',
+                            yellow: '#FFFBEA',
+                            yellowBorder: '#FFE29A',
+                            blue: '#E0F2FE',
+                            blueBorder: '#BAE6FD',
+                            green: '#DCFCE7',
+                            greenBorder: '#86EFAC',
+                            purple: '#F3E8FF',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Zen Maru Gothic"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style src="style.css"></style>
+
+
+</head>
+
+<body class="text-slate-700 min-h-screen flex flex-col antialiased">
+
+    <div id="toast-container"
+        class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none"></div>
+
+    <header class="bg-white border-b-2 border-amber-200/60 shadow-xs transition-all duration-200">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+            <!-- CENTERED LOGO (User Request) -->
+            <div class="text-center my-1 sm:my-0 cursor-pointer mx-auto" onclick="showSummaryPage()">
+                <div
+                    class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-rose-400 to-sky-400 bg-clip-text text-transparent">
+                    <span class="text-2xl sm:text-3xl font-black tracking-wider">✨ momokiのぽかぽか日記 ✨</span>
+                </div>
+                <p class="text-[11px] font-bold text-slate-400 tracking-widest mt-0.5">～気ままに好きなことを載せていきます(^^)～</p>
+            </div>
+
+
+        </div>
+    </header>
+
+
+
+    <!-- MAIN CONTAINER (Dynamically switched between Summary & Detail Pages) -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <div id="view-summary" class="lg:col-span-8 space-y-8">
+
+                <!-- Category Filter Tabs -->
+                <div class="flex items-center justify-between flex-wrap gap-3 border-b border-slate-200 pb-4">
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 w-full sm:w-auto">
+
+
+                    </div>
+
+                    <span id="article-count" class="text-xs font-bold text-slate-400">全 0 件の記事</span>
+                </div>
+
+                <!-- Article Cards Grid Container -->
+                <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamically Populated via JavaScript -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state"
+                    class="hidden text-center py-16 bg-white rounded-3xl border-2 border-dashed border-slate-200 p-8">
+                    <div class="text-5xl mb-3">📝</div>
+                    <h3 class="text-lg font-bold text-slate-700 mb-1">まだ記事が登録されていません</h3>
+                    <p class="text-sm text-slate-400 mb-4">articles フォルダーに Markdown 記事を追加してください。</p>
+                </div>
+            </div>
+
+            <section id="view-detail" class="hidden lg:col-span-8">
+                <article class="bg-white rounded-3xl border-2 border-slate-100 overflow-hidden shadow-sm">
+                    <img id="detail-image" src="" alt="記事のアイキャッチ" class="w-full max-h-96 object-cover bg-slate-100">
+                    <div class="p-6 sm:p-10 space-y-6">
+                        <button type="button" onclick="showSummaryPage()"
+                            class="text-sm font-bold text-slate-500 hover:text-amber-600">
+                            <i class="fa-solid fa-arrow-left mr-1"></i>記事一覧へ戻る
+                        </button>
+                        <div class="space-y-3">
+                            <span id="detail-category-badge"></span>
+                            <h1 id="detail-title" class="text-2xl sm:text-3xl font-black text-slate-800 leading-snug">
+                            </h1>
+                            <p id="detail-date" class="text-xs font-bold text-slate-400"></p>
+                        </div>
+                        <div id="detail-special-block" class="hidden"></div>
+                        <div id="detail-body" class="prose prose-slate max-w-none"></div>
+                        <div class="border-t border-slate-100 pt-5">
+                            <button type="button" onclick="addLike()"
+                                class="rounded-full bg-rose-50 px-4 py-2 text-sm font-bold text-rose-600 hover:bg-rose-100">
+                                <i class="fa-solid fa-heart mr-1"></i>いいね
+                                <span id="detail-like-count">0</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </article>
+            </section>
+
+            <!-- BLOG SIDEBAR (Right Side: 4 Cols) -->
+            <aside class="lg:col-span-4 space-y-6">
+
+                <!-- Profile Card (My Profile) -->
+                <div class="glass-card rounded-3xl p-6 space-y-4">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <i class="fa-solid fa-address-card text-brand-600"></i> Myプロフィール
+                    </h3>
+
+                    <div class="flex flex-col items-center text-center space-y-3">
+                        <div
+                            class="w-20 h-20 rounded-full bg-gradient-to-tr from-brand-600 via-brand-cyan to-brand-magenta p-[3px] shadow-md">
+                            <div
+                                class="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                                <img src="image1.png" alt="Author Profile" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-sm">momoki</h4>
+
+                        </div>
+
+                        <p class="text-xs text-slate-500 leading-relaxed">
+                            基本的にはゲームや趣味について投稿していきます！
+                        </p>
+
+
+                    </div>
+                </div>
+
+                <!-- Category List with Counts -->
+                <div class="glass-card rounded-3xl p-6 space-y-4">
+                    <h3
+                        class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <i class="fa-solid fa-folder-open text-brand-600"></i> カテゴリ一覧
+                    </h3>
+
+                    <ul class="space-y-2 text-xs" id="category-tabs">
+                        <li>
+                            <a
+                                class="flex items-center justify-between text-slate-700 hover:text-brand-600 hover:bg-slate-50 p-2 rounded-xl transition-colors font-medium">
+                                <button type="button" data-cat="all" class="flex items-center gap-2">
+                                    <i class="fa-solid fa-angle-right text-brand-600 text-[10px]"></i>
+                                    すべて
+                                </button>
+                                <span data-category-count="all"
+                                    class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-[10px]">12</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="flex items-center justify-between text-slate-700 hover:text-brand-600 hover:bg-slate-50 p-2 rounded-xl transition-colors font-semibold bg-brand-50/50">
+                                <button type="button" data-cat="game" class="flex items-center gap-2">
+                                    <i class="fa-solid fa-angle-right text-brand-600 text-[10px]"></i>
+                                    ゲーム感想
+                                </button>
+                                <span data-category-count="game"
+                                    class="px-2 py-0.5 bg-brand-500 text-white rounded-full text-[10px]">3</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="flex items-center justify-between text-slate-700 hover:text-brand-600 hover:bg-slate-50 p-2 rounded-xl transition-colors font-medium">
+                                <button type="button" data-cat="card" class="flex items-center gap-2">
+                                    <i class="fa-solid fa-angle-right text-brand-600 text-[10px]"></i>
+                                    カード開封
+                                </button>
+                                <span data-category-count="card"
+                                    class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-[10px]">8</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="flex items-center justify-between text-slate-700 hover:text-brand-600 hover:bg-slate-50 p-2 rounded-xl transition-colors font-medium">
+                                <button type="button" data-cat="diary" class="flex items-center gap-2">
+                                    <i class="fa-solid fa-angle-right text-brand-600 text-[10px]"></i>
+                                    雑記
+                                </button>
+                                <span data-category-count="diary"
+                                    class="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-[10px]">8</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- Recent Posts Widget -->
+
+
+            </aside>
+        </div>
+    </main>
+    <footer class="bg-white border-t border-slate-200 mt-12 py-8 text-center text-xs font-bold text-slate-400">
+        <div class="max-w-5xl mx-auto px-4 space-y-2">
+            <p class="text-slate-600">✨ momokiのぽかぽか日記 ✨</p>
+            <p>© 2026 My Personal Blog. Built for hobby logging.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll To Top Button -->
+    <button id="btn-back-to-top" onclick="scrollToTop()"
+        class="fixed bottom-6 right-6 z-50 bg-amber-400 hover:bg-amber-500 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none hover:scale-110 active:scale-95 border-2 border-white"
+        title="ページ上部へ戻る">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+</body>
+
+</html>

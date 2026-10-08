@@ -1,8 +1,8 @@
 
 /*
  * 記事の追加方法:
- * 1. articles フォルダーに front matter 付きの Markdown ファイルを作成
- * 2. ファイル名を articles/index.json に追加
+ * articles フォルダー直下に front matter 付きの Markdown ファイルを作成します。
+ * articles/index.json は Amplify のビルド時に自動生成されます。
  */
 let articles = [];
 
@@ -59,7 +59,7 @@ async function loadArticles() {
             }
             return article;
         }));
-        articles.sort((a, b) => b.date.localeCompare(a.date));
+        articles.sort((a, b) => Number(b.id) - Number(a.id));
         renderCategoryTabs();
         renderSummaryPage();
     } catch (error) {

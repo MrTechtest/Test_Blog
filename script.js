@@ -168,7 +168,6 @@ function renderDetailPage(articleId) {
     // Render Markdown
     document.getElementById('detail-body').innerHTML = typeof marked !== 'undefined' ? marked.parse(article.body) : article.body;
 
-    document.getElementById('detail-like-count').innerText = article.likes || 0;
 
     // Category Badge
     const badge = document.getElementById('detail-category-badge');
@@ -247,9 +246,7 @@ function renderSummaryPage() {
 
     <!-- Footer Meta -->
     <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-slate-400">
-        <span class="flex items-center gap-1 text-rose-500">
-            <i class="fa-solid fa-heart"></i> ${item.likes || 0}
-        </span>
+
         <span class="text-amber-600 font-bold hover:underline">
             記事を読む <i class="fa-solid fa-chevron-right text-[10px]"></i>
         </span>

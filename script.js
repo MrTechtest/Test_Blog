@@ -175,7 +175,7 @@ function renderDetailPage(articleId) {
         badge.innerText = '🎮 ゲーム感想';
         badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
     } else if (article.category === 'card') {
-        badge.innerText = '🎴 カード開封結果';
+        badge.innerText = '🎴 カード開封';
         badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200';
     } else {
         badge.innerText = '☕ 雑記';

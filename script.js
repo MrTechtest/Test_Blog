@@ -172,7 +172,7 @@ function renderDetailPage(articleId) {
     // Category Badge
     const badge = document.getElementById('detail-category-badge');
     if (article.category === 'game') {
-        badge.innerText = '🎮 ゲーム感想';
+        badge.innerText = '🎮 ゲーム';
         badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
     } else if (article.category === 'card') {
         badge.innerText = '🎴 カード開封';
@@ -208,7 +208,7 @@ function renderSummaryPage() {
     filtered.forEach(item => {
         let catBadge = '';
         if (item.category === 'game') {
-            catBadge = '<span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🎮 ゲーム感想</span>';
+            catBadge = '<span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🎮 ゲーム</span>';
         } else if (item.category === 'card') {
             catBadge = '<span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">🎴 カード開封</span>';
         } else {
